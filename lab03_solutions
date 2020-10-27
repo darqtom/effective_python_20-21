@@ -1,0 +1,220 @@
+import types
+
+print("\n*********************")
+print("Zadanie 1")
+print("*********************", end="\n\n")
+print("a)", end="\n")
+
+
+def log(message, value=None):
+    "Wypisuje wiadomość opcjonalnie wraz z podaną wartością"
+    if not value:
+        print(message)
+    else:
+        print(f'{message}: {value}')
+
+
+log("Hello World!")
+log("The value is", 42)
+
+
+print("\nb)")
+
+
+def mean(*values):
+    """Zwraca średnią liczb podanych jako argumenty pozycyjne"""
+    return sum(values) / len(values)
+
+
+print(mean(1,2,3) == 2)
+print(mean(2,2,4,4) == 3)
+print(mean(1,2,3,4,5,61,2,12,123,123) == 33.6)
+
+
+print("\nc)")
+
+
+def check_dictionary_content(d, **elements):
+    """Sprawdza, czy w danym słowniku znajduje się conajmniej podana liczba elementów"""
+    return all([d.get(k, 0) >= elements[k] for k in elements.keys()])
+
+
+d = {'orange': 3, 'apple': 1, 'dogs': 10}
+print(check_dictionary_content(d, orange=2) == True)
+print(check_dictionary_content(d, orange=2, apple=1) == True)
+print(check_dictionary_content(d, dogs=11) == False)
+print(check_dictionary_content(d, dogs=9, cats=0) == True)
+print(check_dictionary_content(d, apple=0, cats=1) == False)
+print(check_dictionary_content(d, **d) == True)
+
+
+print("\n*********************")
+print("Zadanie 2")
+print("*********************", end="\n\n")
+
+
+def numbers_to_percents(values):
+    if iter(values) is iter(values):
+        raise TypeError('Must be a container')
+    return [v / sum(values) for v in values]
+
+
+print(numbers_to_percents([1,2,1])==[0.25, 0.5, 0.25])
+print(numbers_to_percents([1])==[1])
+print(numbers_to_percents([1,2,3,4])==[0.1, 0.2, 0.3, 0.4])
+# print(numbers_to_percents(i for i in range(5)))
+
+
+print("\n*********************")
+print("Zadanie 3")
+print("*********************", end="\n\n")
+print("a)")
+
+
+def zwroc_rosnace(f, *args):
+    return [arg for arg in args if f(arg) > arg]
+
+
+def f1(n):
+    return n**2-3*n
+
+
+def f2(n):
+    return 100-n
+
+
+def f3(word):
+    return word[::-1]
+
+
+print(zwroc_rosnace(f1, 4, 6, 2, -5)==[6, -5])
+print(zwroc_rosnace(f2, *range(100))==list(range(50)))
+print(zwroc_rosnace(f3, "python", "nie", "jest", "bardzo", "fajny")==['jest', 'bardzo', 'fajny'])
+
+
+print("\nb)")
+
+
+def zwroc_rosnace(f, *args):
+    return [arg for i, arg in enumerate(args) if i > 0 and f(arg) > f(args[i - 1])]
+
+
+def f1(n):
+    return n**2-3*n
+
+
+def f2(n):
+    return 100-n
+
+
+def f3(word):
+    return word[::-1]
+
+
+print(zwroc_rosnace(f1, 4, -5, 6, 2)==[-5])
+print(zwroc_rosnace(f2, *range(100))==[])
+print(zwroc_rosnace(f3, "python", "nie", "jest", "bardzo", "fajny")==['jest', 'fajny'])
+
+
+print("\n*********************")
+print("Zadanie 4")
+print("*********************", end="\n\n")
+
+
+def ile_wywolana(counter=[0]):
+    counter[0] += 1
+    return counter[0]
+
+
+print(ile_wywolana()==1)
+print(ile_wywolana()==2)
+print(ile_wywolana()==3)
+
+
+print("\n*********************")
+print("Zadanie 5")
+print("*********************", end="\n\n")
+
+
+def get_primes():
+    number = 0
+    while True:
+        if True not in (number % i == 0 for i in range(2, int(number ** 0.5) + 1)) and number > 1:
+            yield number
+        number += 1
+
+
+print(isinstance(get_primes(), types.GeneratorType))
+
+results = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+for truth, answer in zip(results, get_primes()):
+    print(truth, truth == answer)
+
+
+print("\n*********************")
+print("Zadanie 6")
+print("*********************", end="\n\n")
+print("a)")
+
+
+def natural_numbers(k=0):
+    """Tworzy generator liczb naturalnych od liczby k"""
+    while True:
+        yield k
+        k += 1
+
+
+print(isinstance(natural_numbers(), types.GeneratorType))
+
+for i, n in enumerate(natural_numbers()):
+    print(i, i == n)
+    if i > 20:
+        break
+
+for i, n in enumerate(natural_numbers(1)):
+    print(i, i + 1 == n)
+    if i > 20:
+        break
+
+
+print("\nb)")
+
+
+def factorials():
+    """Tworzy generator kolejnych silnii"""
+    i = 0
+    while True:
+        res = 1
+        if i > 1:
+            for j in range(2, i + 1):
+                res *= j
+        i += 1
+        yield res
+
+
+print(isinstance(factorials(), types.GeneratorType))
+
+results = [1, 1, 2, 6, 24, 120, 720, 5040]
+for truth, answer in zip(results, factorials()):
+    print(truth, truth == answer)
+
+
+print("\n*********************")
+print("Zadanie 7")
+print("*********************", end="\n\n")
+
+
+def fibonacci_gen():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+
+print(isinstance(fibonacci_gen(), types.GeneratorType))
+
+results = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+for truth, answer in zip(results, fibonacci_gen()):
+    print(truth, truth == answer)
+
+
